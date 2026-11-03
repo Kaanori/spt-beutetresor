@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Beutetresor</AssemblyName>
+    <RootNamespace>Beutetresor</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.3.0</Version>
+    <Description>Legt Erkennungsmarken und Schluessel selbsttaetig in den Sicherheitsbehaelter</Description>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <SpielOrdner Condition="'$(SpielOrdner)' == ''">/mnt/nvmegames/Games/SPT-416</SpielOrdner>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Beutetresor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp" Publicize="true"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="ItemComponent.Types"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/ItemComponent.Types.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Comfort"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/Comfort.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(SpielOrdner)/EscapeFromTarkov_Data/Managed/UnityEngine.UI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="BepInEx"><HintPath>$(SpielOrdner)/BepInEx/core/BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(SpielOrdner)/BepInEx/core/0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="spt-reflection"><HintPath>$(SpielOrdner)/BepInEx/plugins/spt/spt-reflection.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <!-- Nur mit -p:Installieren=true kopieren - ein Probebau soll die
+       laufende Fassung im Spielordner nicht ueberschreiben. -->
+  <Target Name="InsSpiel" AfterTargets="Build" Condition="'$(Installieren)' == 'true'">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SpielOrdner)/BepInEx/plugins" />
+    <Message Importance="high" Text="-> BepInEx/plugins/ (Spiel neu starten)" />
+  </Target>
+
+</Project>
